@@ -17,7 +17,7 @@ import Profile from '../screens/profile';
 
 const Stack = createNativeStackNavigator();
 
-const MyStack = () => {
+const NavigationStack = () => {
   return (
     <Stack.Navigator initialRouteName="Users">
       <Stack.Screen
@@ -30,4 +30,4 @@ const MyStack = () => {
   );
 };
 
-export default MyStack;
+export default NavigationStack;

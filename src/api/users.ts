@@ -41,7 +41,7 @@ export interface User {
 }
 export const GetAllUsers = async () => {
   const users = await axios.get<User[]>(
-    'https://random-data-api.com/api/v2/users?size=10',
+    'https://random-data-api.com/api/v2/users?size=100',
   );
   return users;
 };

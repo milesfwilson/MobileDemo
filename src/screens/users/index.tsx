@@ -1,24 +1,31 @@
 import * as React from 'react';
 import {FC, useEffect, useState} from 'react';
-import {Pressable, ScrollView, Text, TextInput, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import {GetAllUsers, User} from '../../api/users';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './users.styles';
 import {globalColors, globalStyles} from '../../index.styles';
+import {Avatar, TextSearch} from '../../components';
 
-const Users: FC = ({navigation}) => {
+const Users: FC = ({navigation}: any) => {
   const [users, setUsers] = useState<User[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>('');
 
   useEffect(() => {
-    setIsLoading(false);
+    setIsLoading(true);
     GetAllUsers()
       .then(response => {
         setUsers(response.data);
       })
       .catch(() => {
-        console.error('Failed to fetch users');
+        Alert.alert('Failed to retrieve users');
       })
       .finally(() => {
         setIsLoading(false);
@@ -31,16 +38,12 @@ const Users: FC = ({navigation}) => {
 
   return (
     <View>
-      {/* TODO separate into component */}
-      <TextInput
-        value={searchText}
-        onChangeText={s => setSearchText(s)}
-        placeholder="Search"
-        style={[styles.searchInput]}
-      />
-      <ScrollView>
-        {users?.length ? (
-          users
+      <TextSearch searchText={searchText} setSearchText={setSearchText} />
+      {isLoading ? (
+        <ActivityIndicator size="large" color={globalColors.primary} />
+      ) : (
+        <ScrollView>
+          {users
             ?.filter(u =>
               `${u.first_name}${u.last_name}`
                 .toLowerCase()
@@ -56,32 +59,15 @@ const Users: FC = ({navigation}) => {
                   ]}
                   key={u.uid}
                   onPress={() => handleNavigation(u)}>
-                  <View
-                    style={[
-                      styles.initials,
-                      globalStyles.boxShadow,
-                      {
-                        backgroundColor: [
-                          globalColors.primary,
-                          globalColors.secondary,
-                        ][Math.floor(Math.random() * 2)],
-                      },
-                    ]}>
-                    <Text style={[globalStyles.header, styles.initialsText]}>
-                      {u.first_name[0]}
-                      {u.last_name[0]}
-                    </Text>
-                  </View>
+                  <Avatar initials={`${u.first_name[0]}${u.last_name[0]}`} />
                   <Text style={[globalStyles.header]}>
                     {u.first_name} {u.last_name}
                   </Text>
                 </Pressable>
               );
-            })
-        ) : (
-          <Text>No users found</Text>
-        )}
-      </ScrollView>
+            })}
+        </ScrollView>
+      )}
     </View>
   );
 };

@@ -2,6 +2,9 @@ import {StyleSheet} from 'react-native';
 import {globalColors} from '../../index.styles';
 
 export const styles = StyleSheet.create({
+  header: {
+    marginTop: 10,
+  },
   contactCard: {
     display: 'flex',
     flexDirection: 'column',

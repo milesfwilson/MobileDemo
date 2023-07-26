@@ -44,7 +44,7 @@ ${user.address.country}`;
           initials={`${user.first_name[0]}${user.last_name[0]}`}
           size="large"
         />
-        <Text style={globalStyles.header}>
+        <Text style={[globalStyles.header, styles.header]}>
           {user.first_name} {user.last_name}
         </Text>
         <Text>{user.employment.title}</Text>

@@ -2,6 +2,9 @@ import {StyleSheet} from 'react-native';
 import {globalColors} from '../../index.styles';
 
 export const styles = StyleSheet.create({
+  header: {
+    marginLeft: 10,
+  },
   userItem: {
     padding: 10,
     display: 'flex',

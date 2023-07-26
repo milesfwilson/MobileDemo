@@ -36,6 +36,13 @@ const Users: FC = ({navigation}: any) => {
     navigation.navigate('Profile', {user: userInfo});
   };
 
+  const filterString = (fullname: string) =>
+    fullname
+      .toLowerCase()
+      .includes(searchText.split(' ').join('').toLowerCase());
+
+  const sortCriteria = (a: string, b: string) => a.localeCompare(b);
+
   return (
     <View>
       <TextSearch searchText={searchText} setSearchText={setSearchText} />
@@ -44,12 +51,8 @@ const Users: FC = ({navigation}: any) => {
       ) : (
         <ScrollView>
           {users
-            ?.filter(u =>
-              `${u.first_name}${u.last_name}`
-                .toLowerCase()
-                .includes(searchText.split(' ').join('').toLowerCase()),
-            )
-            .sort((a, b) => a.first_name.localeCompare(b.first_name))
+            ?.filter(u => filterString(`${u.first_name}${u.last_name}`))
+            .sort((a, b) => sortCriteria(a.first_name, b.first_name))
             .map(u => {
               return (
                 <Pressable
@@ -60,7 +63,7 @@ const Users: FC = ({navigation}: any) => {
                   key={u.uid}
                   onPress={() => handleNavigation(u)}>
                   <Avatar initials={`${u.first_name[0]}${u.last_name[0]}`} />
-                  <Text style={[globalStyles.header]}>
+                  <Text style={[styles.header, globalStyles.header]}>
                     {u.first_name} {u.last_name}
                   </Text>
                 </Pressable>

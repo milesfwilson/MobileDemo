@@ -1,20 +1,12 @@
 import * as React from 'react';
 import {FC} from 'react';
-
-import {
-  Image,
-  Linking,
-  Platform,
-  Pressable,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
+import {Alert, Linking, Platform, ScrollView, Text, View} from 'react-native';
 import {User} from '../../api/users';
 import {styles} from './profile.styles';
 import {globalStyles} from '../../index.styles';
+import {Avatar, Button} from '../../components';
 
-const Profile: FC = ({navigation, route}) => {
+const Profile: FC = ({route}: any) => {
   const user: User = route.params.user;
 
   const handleEmail = () => {
@@ -37,57 +29,34 @@ const Profile: FC = ({navigation, route}) => {
         Linking.openURL(link);
       }
     } catch (error) {
-      console.log(error);
+      Alert.alert('Failed to open link');
     }
   };
+
+  const fullAddress = `${user.address.street_address}
+${user.address.city}, ${user.address.state} ${user.address.zip_code}
+${user.address.country}`;
 
   return (
     <ScrollView>
       <View style={[styles.contactCard, globalStyles.boxShadow]}>
-        <View style={[styles.avatar, globalStyles.boxShadow]}>
-          <Text style={[styles.avatarText, globalStyles.boxShadow]}>
-            {user.first_name[0]}
-            {user.last_name[0]}
-          </Text>
-        </View>
+        <Avatar
+          initials={`${user.first_name[0]}${user.last_name[0]}`}
+          size="large"
+        />
         <Text style={globalStyles.header}>
           {user.first_name} {user.last_name}
         </Text>
         <Text>{user.employment.title}</Text>
         <View style={[styles.contactMethods]}>
           <Text style={globalStyles.header}>Email</Text>
-          <Pressable
-            onPress={handleEmail}
-            style={({pressed}) => [
-              styles.pressable,
-              globalStyles.row,
-              pressed && styles.pressed,
-            ]}>
-            <Text>{user.email}</Text>
-          </Pressable>
+          <Button onPress={handleEmail}>{user.email}</Button>
+
           <Text style={globalStyles.header}>Phone</Text>
-          <Pressable
-            onPress={handlePhone}
-            style={({pressed}) => [
-              styles.pressable,
-              globalStyles.row,
-              pressed && styles.pressed,
-            ]}>
-            <Text>{user.phone_number}</Text>
-          </Pressable>
+          <Button onPress={handlePhone}>{user.phone_number}</Button>
+
           <Text style={globalStyles.header}>Address</Text>
-          <Pressable
-            onPress={handleAddress}
-            style={({pressed}) => [
-              styles.pressable,
-              pressed && styles.pressed,
-            ]}>
-            <Text>{user.address.street_address}</Text>
-            <Text>
-              {user.address.city}, {user.address.state} {user.address.zip_code}
-            </Text>
-            <Text>{user.address.country}</Text>
-          </Pressable>
+          <Button onPress={handleAddress}>{fullAddress}</Button>
         </View>
       </View>
     </ScrollView>

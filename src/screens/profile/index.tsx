@@ -63,4 +63,4 @@ ${user.address.country}`;
   );
 };
 
-export default Profile;
+export {Profile};

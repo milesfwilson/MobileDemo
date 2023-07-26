@@ -75,4 +75,4 @@ const Users: FC = ({navigation}: any) => {
   );
 };
 
-export default Users;
+export {Users};

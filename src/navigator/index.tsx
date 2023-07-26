@@ -1,32 +1,20 @@
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Button, Text} from 'react-native';
-
-const HomeScreen: React.FC = ({navigation}) => {
-  return (
-    <Button
-      title="Go to Jane's profile"
-      onPress={() => navigation.navigate('Profile', {name: 'Jane'})}
-    />
-  );
-};
-const ProfileScreen: React.FC = ({navigation, route}) => {
-  return <Text>This is {route.params.name}'s profile</Text>;
-};
+import {Profile, Users} from '../screens';
 
 const Stack = createNativeStackNavigator();
 
-const MyStack = () => {
+const NavigationStack = () => {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator initialRouteName="Users">
       <Stack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{title: 'Welcome'}}
+        name="Users"
+        component={Users}
+        options={{title: 'All Users'}}
       />
-      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );
 };
 
-export default MyStack;
+export default NavigationStack;
